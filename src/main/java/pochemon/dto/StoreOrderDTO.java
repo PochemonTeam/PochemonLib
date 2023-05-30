@@ -1,8 +1,4 @@
-package com.dto;
-
-import java.util.Date;
-
-import com.enums.Action;
+package pochemon.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,10 +9,9 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class StoreTransactionDTO {
+public class StoreOrderDTO {
 	Integer id;
 	Integer userId;
 	Integer cardId;
-	Action action;
-	Date timeSt;
+	Float price;
 }

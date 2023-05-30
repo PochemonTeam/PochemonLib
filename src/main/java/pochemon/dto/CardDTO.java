@@ -1,4 +1,4 @@
-package com.dto;
+package pochemon.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
