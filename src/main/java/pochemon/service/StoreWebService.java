@@ -18,8 +18,8 @@ import java.util.List;
 @Component
 public class StoreWebService {
 
-    @Value("${store.service.uri}")
-    private String storeServiceUrl;
+    @Value("${api.url}")
+    private String apiUrl;
 
     private final RestTemplate restTemplate;
 
@@ -28,21 +28,21 @@ public class StoreWebService {
     }
 
     public Boolean sellCard(StoreOrderDTO storeOrderDTO) {
-        String url = storeServiceUrl + "/store/sell";
+        String url = apiUrl + "/stores/sell";
 
         ResponseEntity<Boolean> responseEntity = restTemplate.postForEntity(url, storeOrderDTO, Boolean.class);
         return responseEntity.getStatusCode().is2xxSuccessful();
     }
 
     public boolean buyCard(StoreOrderDTO storeOrderDTO) {
-        String url = storeServiceUrl + "/store/buy";
+        String url = apiUrl + "/stores/buy";
 
         ResponseEntity<Boolean> responseEntity = restTemplate.postForEntity(url, storeOrderDTO, Boolean.class);
         return responseEntity.getStatusCode().is2xxSuccessful();
     }
 
     public List<StoreTransactionDTO> getAllTransactions() {
-        String url = storeServiceUrl + "/store/transaction/all";
+        String url = apiUrl + "/stores/transactions";
 
         ResponseEntity<List<StoreTransactionDTO>> responseEntity = restTemplate.exchange(url, HttpMethod.GET, null, new ParameterizedTypeReference<List<StoreTransactionDTO>>() {});
         if (responseEntity.getStatusCode().is2xxSuccessful()) {
@@ -54,7 +54,7 @@ public class StoreWebService {
     }
 
     public List<StoreOrderDTO> getAllOrders() {
-        String url = storeServiceUrl + "/store/order/all";
+        String url = apiUrl + "/stores/orders";
 
         ResponseEntity<List<StoreOrderDTO>> responseEntity = restTemplate.exchange(url, HttpMethod.GET, null, new ParameterizedTypeReference<List<StoreOrderDTO>>() {});
         if (responseEntity.getStatusCode().is2xxSuccessful()) {

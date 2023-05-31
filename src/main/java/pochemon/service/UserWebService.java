@@ -12,8 +12,8 @@ import java.util.List;
 
 @Component
 public class UserWebService {
-    @Value("${user.service.uri}")
-    private String userServiceUrl;
+    @Value("${api.url}")
+    private String apiUrl;
 
     private final RestTemplate restTemplate;
 
@@ -22,7 +22,7 @@ public class UserWebService {
     }
 
     public UserDTO getUser(Integer id) {
-        String url = userServiceUrl + "/users/" + id;
+        String url = apiUrl + "/users/" + id;
 
         ResponseEntity<UserDTO> responseEntity = restTemplate.getForEntity(url, UserDTO.class);
         if (responseEntity.getStatusCode().is2xxSuccessful()) {
@@ -34,7 +34,7 @@ public class UserWebService {
     }
 
     public Boolean editUser(UserDTO userDto) {
-        String url = userServiceUrl + "/users";
+        String url = apiUrl + "/users";
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -45,7 +45,7 @@ public class UserWebService {
     }
 
     public Boolean removeUser(UserDTO userDto) {
-        String url = userServiceUrl + "/users";
+        String url = apiUrl + "/users";
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -56,7 +56,7 @@ public class UserWebService {
     }
 
     public Boolean addUser(UserDTO userDto) {
-        String url = userServiceUrl + "/users";
+        String url = apiUrl + "/users";
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -67,21 +67,21 @@ public class UserWebService {
     }
 
     public Boolean changeMoney(UserDTO user, Float money) {
-        String url = userServiceUrl + "/users/change-money?userId=" + user.getId() + "&money=" + money;
+        String url = apiUrl + "/users/change-money?userId=" + user.getId() + "&money=" + money;
 
         ResponseEntity<Boolean> responseEntity = restTemplate.postForEntity(url, null, Boolean.class);
         return responseEntity.getStatusCode().is2xxSuccessful();
     }
 
     public Boolean authentication(String username, String password) {
-        String url = userServiceUrl + "/users/auth";
+        String url = apiUrl + "/users/auth";
 
         ResponseEntity<Boolean> responseEntity = restTemplate.postForEntity(url, null, Boolean.class);
         return responseEntity.getStatusCode().is2xxSuccessful();
     }
 
     public List<UserDTO> getAllUsers() {
-        String url = userServiceUrl + "/users";
+        String url = apiUrl + "/users";
 
         ResponseEntity<List<UserDTO>> responseEntity = restTemplate.exchange(url, HttpMethod.GET, null, new ParameterizedTypeReference<List<UserDTO>>() {});
         if (responseEntity.getStatusCode().is2xxSuccessful()) {

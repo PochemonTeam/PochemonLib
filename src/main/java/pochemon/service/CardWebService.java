@@ -14,8 +14,8 @@ import java.util.List;
 @Component
 public class CardWebService {
 
-    @Value("${card.service.uri}")
-    private String cardServiceUrl;
+    @Value("${api.url}")
+    private String apiUrl;
 
     private final RestTemplate restTemplate;
 
@@ -24,7 +24,7 @@ public class CardWebService {
     }
 
     public CardDTO getCard(Integer id) {
-        String url = cardServiceUrl + "/cards/" + id;
+        String url = apiUrl + "/cards/" + id;
 
         ResponseEntity<CardDTO> responseEntity = restTemplate.getForEntity(url, CardDTO.class);
         if (responseEntity.getStatusCode().is2xxSuccessful()) {
@@ -36,7 +36,7 @@ public class CardWebService {
     }
 
     public Boolean editCard(CardDTO cardDto) {
-        String url = cardServiceUrl + "/card";
+        String url = apiUrl + "/cards";
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -47,7 +47,7 @@ public class CardWebService {
     }
 
     public Boolean removeCard(CardDTO cardDto) {
-        String url = cardServiceUrl + "/card";
+        String url = apiUrl + "/cards";
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -58,7 +58,7 @@ public class CardWebService {
     }
 
     public List<CardDTO> getAllCardsToSell() {
-        String url = cardServiceUrl + "/cards/shop";
+        String url = apiUrl + "/cards/shop";
 
         return getCardDTOS(url);
     }
@@ -74,13 +74,13 @@ public class CardWebService {
     }
 
     public List<CardDTO> getAllCards() {
-        String url = cardServiceUrl + "/cards";
+        String url = apiUrl + "/cards";
 
         return getCardDTOS(url);
     }
 
     public List<CardDTO> getAllCardsByUser(Integer id) {
-        String url = cardServiceUrl + "/cards/user/" + id;
+        String url = apiUrl + "/cards/user/" + id;
 
         return getCardDTOS(url);
     }
