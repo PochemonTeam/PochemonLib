@@ -23,4 +23,8 @@ public class StoreWebService {
     public List<StoreTransactionDTO> getAllTransactions() {
         return new ArrayList<>();
     }
+
+    public List<StoreOrderDTO> getAllOrders() {
+        return new ArrayList<>();
+    }
 }
