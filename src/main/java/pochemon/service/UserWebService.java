@@ -1,34 +1,94 @@
 package pochemon.service;
 
-import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.*;
+import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestTemplate;
 import pochemon.dto.UserDTO;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Service
+@Component
 public class UserWebService {
+    @Value("${user.service.uri}")
+    private String userServiceUrl;
+
+    private final RestTemplate restTemplate;
+
+    public UserWebService() {
+        this.restTemplate = new RestTemplate();
+    }
+
     public UserDTO getUser(Integer id) {
-        return new UserDTO();
+        String url = userServiceUrl + "/users/" + id;
+
+        ResponseEntity<UserDTO> responseEntity = restTemplate.getForEntity(url, UserDTO.class);
+        if (responseEntity.getStatusCode().is2xxSuccessful()) {
+            return responseEntity.getBody();
+        } else {
+            // Gérer le cas d'erreur si nécessaire
+            return new UserDTO();
+        }
     }
 
     public Boolean editUser(UserDTO userDto) {
-        return true;
+        String url = userServiceUrl + "/users";
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<UserDTO> requestEntity = new HttpEntity<>(userDto, headers);
+
+        ResponseEntity<Boolean> responseEntity = restTemplate.exchange(url, HttpMethod.PUT, requestEntity, Boolean.class);
+        return responseEntity.getStatusCode().is2xxSuccessful();
     }
 
     public Boolean removeUser(UserDTO userDto) {
-        return true;
+        String url = userServiceUrl + "/users";
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<UserDTO> requestEntity = new HttpEntity<>(userDto, headers);
+
+        ResponseEntity<Boolean> responseEntity = restTemplate.exchange(url, HttpMethod.DELETE, requestEntity, Boolean.class);
+        return responseEntity.getStatusCode().is2xxSuccessful();
     }
 
     public Boolean addUser(UserDTO userDto) {
-        return true;
+        String url = userServiceUrl + "/users";
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<UserDTO> requestEntity = new HttpEntity<>(userDto, headers);
+
+        ResponseEntity<Boolean> responseEntity = restTemplate.exchange(url, HttpMethod.POST, requestEntity, Boolean.class);
+        return responseEntity.getStatusCode().is2xxSuccessful();
+    }
+
+    public Boolean changeMoney(UserDTO user, Float money) {
+        String url = userServiceUrl + "/users/change-money?userId=" + user.getId() + "&money=" + money;
+
+        ResponseEntity<Boolean> responseEntity = restTemplate.postForEntity(url, null, Boolean.class);
+        return responseEntity.getStatusCode().is2xxSuccessful();
     }
 
     public Boolean authentication(String username, String password) {
-        return true;
+        String url = userServiceUrl + "/users/auth";
+
+        ResponseEntity<Boolean> responseEntity = restTemplate.postForEntity(url, null, Boolean.class);
+        return responseEntity.getStatusCode().is2xxSuccessful();
     }
 
     public List<UserDTO> getAllUsers() {
-        return new ArrayList<>();
+        String url = userServiceUrl + "/users";
+
+        ResponseEntity<List<UserDTO>> responseEntity = restTemplate.exchange(url, HttpMethod.GET, null, new ParameterizedTypeReference<List<UserDTO>>() {});
+        if (responseEntity.getStatusCode().is2xxSuccessful()) {
+            return responseEntity.getBody();
+        } else {
+            // Gérer le cas d'erreur si nécessaire
+            return new ArrayList<>();
+        }
     }
 }
