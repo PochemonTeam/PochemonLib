@@ -1,11 +1,13 @@
 package pochemon.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import pochemon.dto.CardDTO;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class CardWebService {
 
     public CardDTO getCard(Integer id) {
