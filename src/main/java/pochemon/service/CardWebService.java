@@ -46,12 +46,21 @@ public class CardWebService {
         return responseEntity.getStatusCode().is2xxSuccessful();
     }
 
-    public Boolean removeCard(CardDTO cardDto) {
-        String url = apiUrl + "/cards";
+    public Boolean removeCard(Integer id) {
+
+        String url = apiUrl + "/cards/" + id;
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity<CardDTO> requestEntity = new HttpEntity<>(cardDto, headers);
+        ResponseEntity<CardDTO> getEntity = restTemplate.getForEntity(url, CardDTO.class);
+        HttpEntity<CardDTO> requestEntity;
+
+        if (getEntity.getStatusCode().is2xxSuccessful()) {
+            requestEntity = new HttpEntity<>(getEntity.getBody(), headers);
+        } else {
+            // Gérer le cas d'erreur si nécessaire
+            return null;
+        }
 
         ResponseEntity<Boolean> responseEntity = restTemplate.exchange(url, HttpMethod.DELETE, requestEntity, Boolean.class);
         return responseEntity.getStatusCode().is2xxSuccessful();
