@@ -12,8 +12,7 @@ import java.util.List;
 
 @Component
 public class UserWebService {
-    @Value("${api.url}")
-    private String apiUrl;
+    private String apiUrl = "http://card-service:8080/api";
 
     private final RestTemplate restTemplate;
 

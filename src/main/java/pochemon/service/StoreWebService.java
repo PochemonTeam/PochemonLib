@@ -18,8 +18,7 @@ import java.util.List;
 @Component
 public class StoreWebService {
 
-    @Value("${api.url}")
-    private String apiUrl;
+    private String apiUrl = "http://store-service:8080/api";
 
     private final RestTemplate restTemplate;
 
